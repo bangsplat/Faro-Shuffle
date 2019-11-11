@@ -21,6 +21,9 @@ use warnings;
 #
 # Version 0.3
 # added structure for different shuffle types and support for false shuffles
+#
+# Version 0.9
+# in-faro
 # 
 
 # constants
@@ -93,8 +96,17 @@ sub shuffle
             }
         }
     } elsif ( $shuffle_type eq "i" ){                       # in faro
-        ## need to figure out the math on the in faro
-        @shuffled_cards = @cards;        
+        # ( ( p * 2 ) + 1 ) mod ( n + 1 )
+        # p = initial position (zero-based) ($i)
+        # n = number of cards ($num_cards)
+        #
+        # no special cases!
+        
+        for ( my $i = 0; $i < $num_cards; $i++ ){
+            $new_position = ( ( $i * 2 ) + 1 ) % ( $num_cards + 1 );
+            # place card into correct position of output
+            $shuffled_cards[$new_position] = $cards[$i];
+        }
     } else {                                                # false shuffle
         @shuffled_cards = @cards;
     }
