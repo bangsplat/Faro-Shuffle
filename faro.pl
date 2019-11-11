@@ -18,6 +18,9 @@ use warnings;
 # 
 # Version 0.2
 # first working version (at least for out faros)
+#
+# Version 0.3
+# added structure for different shuffle types and support for false shuffles
 # 
 
 # constants
@@ -69,13 +72,13 @@ sub shuffle
     my @shuffled_cards;
     my $new_position;
     
-    if ( lc $s2 eq "i" ) {
-        ## in-faro
-    }
-    else {  # out-faro (default)
-        # step through each card in the deck
-        # calculate where it will end up after the shuffle
-        # place the card in that location
+    my $shuffle_type = lc ( substr ( $s2, 0, 1 ) );
+    
+    # step through each card in the deck
+    # calculate where it will end up after the shuffle
+    # place the card in that location
+    
+    if ( $shuffle_type eq "o" ) {                           # out faro
         for ( my $i = 0; $i < $num_cards; $i++ ) {
             if ( $i eq $last_card) {                        # last card is a special case
                 $shuffled_cards[$last_card] = $cards[$i];
@@ -89,6 +92,11 @@ sub shuffle
                 $shuffled_cards[$new_position] = $cards[$i];
             }
         }
+    } elsif ( $shuffle_type eq "i" ){                       # in faro
+        ## need to figure out the math on the in faro
+        @shuffled_cards = @cards;        
+    } else {                                                # false shuffle
+        @shuffled_cards = @cards;
     }
     
     return( "@shuffled_cards" );
